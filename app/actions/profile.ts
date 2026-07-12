@@ -25,6 +25,7 @@ export async function saveGeneralProfile(formData: FormData) {
   const province = formData.get("province") as string;
   const statut_immigration = formData.get("statut_immigration") as string;
   const situation_familiale = formData.get("situation_familiale") as string;
+  const situation_professionnelle = formData.get("situation_professionnelle") as string;
   const a_des_enfants = formData.get("a_des_enfants") === "on";
 
   const { error } = await supabase.from("profiles").upsert(
@@ -34,6 +35,7 @@ export async function saveGeneralProfile(formData: FormData) {
       province,
       statut_immigration,
       situation_familiale,
+      situation_professionnelle,
       a_des_enfants,
       updated_at: new Date().toISOString(),
     },
@@ -75,6 +77,15 @@ export async function saveFinancialProfile(formData: FormData) {
   const objectif_financier = (formData.get("objectif_financier") as string) || null;
   const montant_objectif = toNumber(formData.get("montant_objectif"));
 
+  const chiffre_affaires_mensuel = toNumber(formData.get("chiffre_affaires_mensuel"));
+  const benefices_mensuels = toNumber(formData.get("benefices_mensuels"));
+  const taxes_a_payer_estimees = toNumber(formData.get("taxes_a_payer_estimees"));
+  const montant_bourse_mensuel = toNumber(formData.get("montant_bourse_mensuel"));
+  const programme_etudes = (formData.get("programme_etudes") as string) || null;
+  const progression_etudes = (formData.get("progression_etudes") as string) || null;
+  const montant_pension_mensuel = toNumber(formData.get("montant_pension_mensuel"));
+  const age_retraite_prevu = toNumber(formData.get("age_retraite_prevu"));
+
   const { error } = await supabase.from("financial_profiles").upsert(
     {
       user_id: user!.id,
@@ -92,6 +103,14 @@ export async function saveFinancialProfile(formData: FormData) {
       rendement_annuel_estime,
       objectif_financier,
       montant_objectif,
+      chiffre_affaires_mensuel,
+      benefices_mensuels,
+      taxes_a_payer_estimees,
+      montant_bourse_mensuel,
+      programme_etudes,
+      progression_etudes,
+      montant_pension_mensuel,
+      age_retraite_prevu,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "user_id" }

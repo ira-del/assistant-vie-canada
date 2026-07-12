@@ -28,9 +28,8 @@ export async function updateSession(request: NextRequest) {
   )
 
   // IMPORTANT : ne pas retirer cet appel, il rafraîchit le token de session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // (le résultat lui-même n'est pas utilisé ici, seul l'effet de bord compte)
+  await supabase.auth.getUser()
 
   return supabaseResponse
 }

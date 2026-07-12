@@ -34,3 +34,38 @@ body {
               radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.15), transparent 40%),
               var(--color-background);
 }
+
+/* Sensation tactile sur TOUS les boutons du projet : curseur main, léger
+   éclaircissement au survol, effet d'appui au clic. Global pour que ce soit
+   cohérent partout sans avoir à répéter ces classes sur chaque bouton. */
+button:not(:disabled) {
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+button:not(:disabled):hover {
+  filter: brightness(1.12);
+}
+button:not(:disabled):active {
+  transform: scale(0.96);
+}
+
+/* Même effet pour les liens stylés comme des boutons (Next.js <Link>) —
+   pas les liens texte simples (ex: "Inscris-toi"), seulement ceux avec
+   cette classe explicite. */
+a.link-button {
+  cursor: pointer;
+  transition: transform 0.1s ease, filter 0.15s ease;
+}
+a.link-button:hover {
+  filter: brightness(1.12);
+}
+a.link-button:active {
+  transform: scale(0.96);
+}
+
+/* Items de menu déroulant en liste verticale : garde le retour visuel par
+   fond (comme leurs voisins <Link>) plutôt que l'effet d'échelle global,
+   qui casserait l'alignement avec le reste de la liste. */
+button.menu-item-button:active {
+  transform: none;
+}

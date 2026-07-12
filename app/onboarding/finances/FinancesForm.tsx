@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { saveFinancialProfile } from "@/app/actions/profile";
+import OnboardingStepper from "@/components/onboarding/OnboardingStepper";
 
 function LabelWithTooltip({
   htmlFor,
@@ -56,19 +57,34 @@ interface FinancialProfile {
   rendement_annuel_estime?: number;
   objectif_financier?: string;
   montant_objectif?: number;
+  chiffre_affaires_mensuel?: number;
+  benefices_mensuels?: number;
+  taxes_a_payer_estimees?: number;
+  montant_bourse_mensuel?: number;
+  programme_etudes?: string;
+  progression_etudes?: string;
+  montant_pension_mensuel?: number;
+  age_retraite_prevu?: number;
 }
 
 export default function OnboardingFinancesClient({
   finances,
+  situationProfessionnelle,
 }: {
   finances: FinancialProfile | null;
+  situationProfessionnelle: string | null;
 }) {
   const [dettes, setDettes] = useState<number>(finances?.dettes ?? 0);
   const aDesDettes = dettes > 0;
 
+  const estEntrepreneur = situationProfessionnelle === "Entrepreneur(e) / travailleur(-euse) autonome";
+  const estEtudiant = situationProfessionnelle === "Étudiant(e)";
+  const estRetraite = situationProfessionnelle === "Retraité(e)";
+
   return (
     <main className="min-h-screen gradient-bg flex items-center justify-center p-6">
       <div className="glass rounded-2xl p-10 max-w-lg w-full">
+        <OnboardingStepper currentStep={2} totalSteps={2} />
         <p className="text-sm text-[var(--color-secondary)] mb-2 text-center">
           Étape 2 sur 2
         </p>
@@ -327,6 +343,162 @@ export default function OnboardingFinancesClient({
               className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
             />
           </div>
+
+          {estEntrepreneur && (
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-sm font-semibold text-[var(--color-primary)] mb-3">
+                Ton activité (travailleur autonome)
+              </p>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="chiffre_affaires_mensuel"
+                    label="Chiffre d'affaires mensuel ($)"
+                    tooltip="Le total de ce que ton activité facture chaque mois, avant dépenses et taxes."
+                  />
+                  <input
+                    id="chiffre_affaires_mensuel"
+                    name="chiffre_affaires_mensuel"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    defaultValue={finances?.chiffre_affaires_mensuel ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="benefices_mensuels"
+                    label="Bénéfices mensuels ($)"
+                    tooltip="Ce qu'il te reste après les dépenses liées à ton activité (matériel, sous-traitance, etc.), avant impôt."
+                  />
+                  <input
+                    id="benefices_mensuels"
+                    name="benefices_mensuels"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    defaultValue={finances?.benefices_mensuels ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="taxes_a_payer_estimees"
+                    label="Taxes/acomptes à prévoir ($)"
+                    tooltip="Une estimation de ce que tu devras mettre de côté pour l'impôt et les acomptes provisionnels."
+                  />
+                  <input
+                    id="taxes_a_payer_estimees"
+                    name="taxes_a_payer_estimees"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    defaultValue={finances?.taxes_a_payer_estimees ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {estEtudiant && (
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-sm font-semibold text-[var(--color-primary)] mb-3">
+                Tes études
+              </p>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="montant_bourse_mensuel"
+                    label="Bourse (équivalent mensuel, $)"
+                    tooltip="Si tu reçois une bourse ou une aide financière, indique son équivalent mensuel. Laisse à 0 si tu n'en as pas."
+                  />
+                  <input
+                    id="montant_bourse_mensuel"
+                    name="montant_bourse_mensuel"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    defaultValue={finances?.montant_bourse_mensuel ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="programme_etudes"
+                    label="Programme d'études"
+                    tooltip="Le nom de ton programme ou domaine d'études."
+                  />
+                  <input
+                    id="programme_etudes"
+                    name="programme_etudes"
+                    type="text"
+                    defaultValue={finances?.programme_etudes ?? ""}
+                    placeholder="Ex: Baccalauréat en informatique"
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="progression_etudes"
+                    label="Progression"
+                    tooltip="Où tu en es dans ton programme, ex: '2e année sur 4'."
+                  />
+                  <input
+                    id="progression_etudes"
+                    name="progression_etudes"
+                    type="text"
+                    defaultValue={finances?.progression_etudes ?? ""}
+                    placeholder="Ex: 2e année sur 4"
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {estRetraite && (
+            <div className="border-t border-white/10 pt-4">
+              <p className="text-sm font-semibold text-[var(--color-primary)] mb-3">
+                Ta retraite
+              </p>
+              <div className="flex flex-col gap-4">
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="montant_pension_mensuel"
+                    label="Pension mensuelle ($)"
+                    tooltip="Le total de tes revenus de pension chaque mois (RRQ/RPC, Sécurité de la vieillesse, pension privée, etc.)."
+                  />
+                  <input
+                    id="montant_pension_mensuel"
+                    name="montant_pension_mensuel"
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    defaultValue={finances?.montant_pension_mensuel ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+                <div>
+                  <LabelWithTooltip
+                    htmlFor="age_retraite_prevu"
+                    label="Âge de retraite prévu/actuel"
+                    tooltip="L'âge auquel tu as pris ta retraite, ou celui que tu prévois."
+                  />
+                  <input
+                    id="age_retraite_prevu"
+                    name="age_retraite_prevu"
+                    type="number"
+                    min="0"
+                    max="120"
+                    defaultValue={finances?.age_retraite_prevu ?? 0}
+                    className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"

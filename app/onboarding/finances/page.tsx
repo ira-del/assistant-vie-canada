@@ -8,6 +8,7 @@ export default async function OnboardingFinancesPage() {
   } = await supabase.auth.getUser();
 
   let finances = null;
+  let situationProfessionnelle: string | null = null;
   if (user) {
     const { data } = await supabase
       .from("financial_profiles")
@@ -15,7 +16,19 @@ export default async function OnboardingFinancesPage() {
       .eq("user_id", user.id)
       .single();
     finances = data;
+
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("situation_professionnelle")
+      .eq("user_id", user.id)
+      .single();
+    situationProfessionnelle = profile?.situation_professionnelle ?? null;
   }
 
-  return <OnboardingFinancesClient finances={finances} />;
+  return (
+    <OnboardingFinancesClient
+      finances={finances}
+      situationProfessionnelle={situationProfessionnelle}
+    />
+  );
 }

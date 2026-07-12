@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { saveGeneralProfile } from "@/app/actions/profile";
+import OnboardingStepper from "@/components/onboarding/OnboardingStepper";
 
 export default async function OnboardingProfilePage() {
   const supabase = await createClient();
@@ -20,6 +21,7 @@ export default async function OnboardingProfilePage() {
   return (
     <main className="min-h-screen gradient-bg flex items-center justify-center p-6">
       <div className="glass rounded-2xl p-10 max-w-lg w-full">
+        <OnboardingStepper currentStep={1} totalSteps={2} />
         <p className="text-sm text-[var(--color-secondary)] mb-2 text-center">
           Étape 1 sur 2
         </p>
@@ -120,6 +122,26 @@ export default async function OnboardingProfilePage() {
               <option className="bg-[var(--color-surface)] text-white">Marié(e)</option>
               <option className="bg-[var(--color-surface)] text-white">Divorcé(e)</option>
               <option className="bg-[var(--color-surface)] text-white">Veuf/Veuve</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="situation_professionnelle" className="block text-sm mb-1">
+              Situation professionnelle
+            </label>
+            <select
+              id="situation_professionnelle"
+              name="situation_professionnelle"
+              required
+              defaultValue={profile?.situation_professionnelle ?? ""}
+              className="w-full rounded-lg bg-[var(--color-surface)] border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition text-white"
+            >
+              <option value="" disabled className="bg-[var(--color-surface)] text-white">Sélectionne...</option>
+              <option className="bg-[var(--color-surface)] text-white">Étudiant(e)</option>
+              <option className="bg-[var(--color-surface)] text-white">Travailleur(-euse) salarié(e)</option>
+              <option className="bg-[var(--color-surface)] text-white">Entrepreneur(e) / travailleur(-euse) autonome</option>
+              <option className="bg-[var(--color-surface)] text-white">Retraité(e)</option>
+              <option className="bg-[var(--color-surface)] text-white">Sans emploi actuellement</option>
             </select>
           </div>
 

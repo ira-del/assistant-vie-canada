@@ -1,7 +1,14 @@
 import Link from "next/link";
 import { login } from "@/app/actions/auth";
+import PasswordInput from "@/components/ui/PasswordInput";
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
   return (
     <main className="min-h-screen gradient-bg flex items-center justify-center p-6">
       <div className="glass rounded-2xl p-10 max-w-md w-full">
@@ -11,6 +18,12 @@ export default function LoginPage() {
         <p className="text-[var(--color-text-secondary)] text-center mb-8">
           Accède à ton tableau de bord financier
         </p>
+
+        {error && (
+          <p className="text-sm text-[var(--color-danger)] text-center mb-4">
+            {error}
+          </p>
+        )}
 
         <form action={login} className="flex flex-col gap-4">
           <div>
@@ -28,16 +41,23 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm mb-1">
-              Mot de passe
-            </label>
-            <input
+            <div className="flex items-center justify-between mb-1">
+              <label htmlFor="password" className="block text-sm">
+                Mot de passe
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-xs text-[var(--color-secondary)] hover:underline"
+              >
+                Mot de passe oublié ?
+              </Link>
+            </div>
+            <PasswordInput
               id="password"
               name="password"
-              type="password"
               required
-              className="w-full rounded-lg bg-white/5 border border-white/10 px-4 py-2 outline-none focus:border-[var(--color-primary)] transition"
               placeholder="••••••••"
+              autoComplete="current-password"
             />
           </div>
 

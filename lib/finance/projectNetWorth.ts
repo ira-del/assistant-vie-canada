@@ -21,8 +21,16 @@ export interface YearProjection {
   patrimoineNet: number;
 }
 
+export interface MonthProjection {
+  mois: number;
+  epargne: number;
+  dettes: number;
+  investissements: number;
+  patrimoineNet: number;
+}
+
 // Convertit un montant selon sa fréquence réelle en équivalent mensuel
-function montantMensuel(montant: number, frequence: string): number {
+export function montantMensuel(montant: number, frequence: string): number {
   switch (frequence) {
     case "hebdomadaire":
       return (montant * 52) / 12;
@@ -80,6 +88,64 @@ export function projectNetWorth(
 
     results.push({
       annee: year,
+      epargne: Math.round(epargne),
+      dettes: Math.round(dettes),
+      investissements: Math.round(investissements),
+      patrimoineNet: Math.round(epargne + investissements - dettes),
+    });
+  }
+
+  return results;
+}
+
+// Même moteur que projectNetWorth, mais avec un point par mois au lieu d'un
+// point par année — plus lisible pour les courtes durées (1-3 ans), où une
+// projection annuelle ne donne que 2-4 points de données.
+export function projectNetWorthMensuel(
+  inputs: FinancialInputs,
+  mois: number
+): MonthProjection[] {
+  const results: MonthProjection[] = [];
+
+  let epargne = inputs.epargne_actuelle;
+  let dettes = inputs.dettes;
+  let investissements = 0;
+
+  const tauxDettesMensuel = inputs.taux_interet_dettes / 100 / 12;
+  // Taux mensuel équivalent au taux annuel, pour que la composition mensuelle
+  // rejoigne exactement le résultat annuel de projectNetWorth à chaque année pleine.
+  const rendementMensuel = Math.pow(1 + inputs.rendement_annuel_estime / 100, 1 / 12) - 1;
+
+  const mensualiteDette = montantMensuel(
+    inputs.montant_paiement_dettes,
+    inputs.frequence_paiement_dettes
+  );
+  const epargneMensuelle = montantMensuel(
+    inputs.montant_epargne_mensuel,
+    inputs.frequence_epargne
+  );
+
+  results.push({
+    mois: 0,
+    epargne: Math.round(epargne),
+    dettes: Math.round(dettes),
+    investissements: Math.round(investissements),
+    patrimoineNet: Math.round(epargne + investissements - dettes),
+  });
+
+  for (let m = 1; m <= mois; m++) {
+    if (dettes > 0) {
+      const interets = dettes * tauxDettesMensuel;
+      const remboursementReel = Math.min(mensualiteDette, dettes + interets);
+      dettes = Math.max(dettes + interets - remboursementReel, 0);
+    }
+
+    epargne += epargneMensuelle;
+    investissements += inputs.montant_investi_mensuel;
+    investissements = investissements * (1 + rendementMensuel);
+
+    results.push({
+      mois: m,
       epargne: Math.round(epargne),
       dettes: Math.round(dettes),
       investissements: Math.round(investissements),
