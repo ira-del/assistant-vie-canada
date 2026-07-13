@@ -147,12 +147,12 @@ const healthScore = calculateHealthScore({
     n.toLocaleString("fr-CA", { style: "currency", currency: "CAD" });
 
   return (
-    <main className="min-h-screen gradient-bg p-6 md:p-10">
+    <main className="min-h-screen gradient-bg p-4 sm:p-6 md:p-10">
       <div className="max-w-5xl mx-auto">
         {/* En-tête */}
-<div className="flex items-center justify-between mb-8">
+<div className="flex items-center justify-between mb-6 md:mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Tableau de bord</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Tableau de bord</h1>
             <p className="text-[var(--color-text-secondary)] text-sm">
               {user!.email} · {profile.province}
             </p>
@@ -166,13 +166,13 @@ const healthScore = calculateHealthScore({
         <SmartAlerts alerts={smartAlerts} dismissedIds={dismissedAlertIds} />
 
         {/* Cartes principales */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 md:mb-8">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Valeur nette
             </p>
             <p
-              className={`text-2xl font-bold ${
+              className={`text-lg sm:text-2xl font-bold ${
                 patrimoineNet >= 0
                   ? "text-[var(--color-success)]"
                   : "text-[var(--color-danger)]"
@@ -182,53 +182,53 @@ const healthScore = calculateHealthScore({
             </p>
           </div>
 
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Revenus mensuels
             </p>
-            <p className="text-2xl font-bold">
+            <p className="text-lg sm:text-2xl font-bold">
               {formatMoney(revenuMensuelTotal)}
             </p>
           </div>
 
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Dépenses mensuelles
             </p>
-            <p className="text-2xl font-bold">{formatMoney(depenses)}</p>
+            <p className="text-lg sm:text-2xl font-bold">{formatMoney(depenses)}</p>
           </div>
 
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Épargne actuelle
             </p>
-            <p className="text-2xl font-bold">{formatMoney(epargne)}</p>
+            <p className="text-lg sm:text-2xl font-bold">{formatMoney(epargne)}</p>
           </div>
 
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Dettes
             </p>
-            <p className="text-2xl font-bold text-[var(--color-danger)]">
+            <p className="text-lg sm:text-2xl font-bold text-[var(--color-danger)]">
               {formatMoney(dettes)}
             </p>
           </div>
 
-          <div className="glass rounded-2xl p-6">
-            <p className="text-sm text-[var(--color-text-secondary)] mb-1">
+          <div className="glass rounded-2xl p-4 sm:p-6">
+            <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mb-1">
               Taux d&apos;épargne
             </p>
-            <p className="text-2xl font-bold">{tauxEpargne}%</p>
+            <p className="text-lg sm:text-2xl font-bold">{tauxEpargne}%</p>
           </div>
         </div>
 
         {/* Solde mensuel */}
-        <div className="glass rounded-2xl p-6 mb-8">
+        <div className="glass rounded-2xl p-5 sm:p-6 mb-6 md:mb-8">
           <p className="text-sm text-[var(--color-text-secondary)] mb-1">
             Solde mensuel (après dépenses et investissements)
           </p>
           <p
-            className={`text-3xl font-bold ${
+            className={`text-2xl sm:text-3xl font-bold ${
               soldeMensuel >= 0
                 ? "text-[var(--color-success)]"
                 : "text-[var(--color-danger)]"
@@ -238,10 +238,10 @@ const healthScore = calculateHealthScore({
           </p>
         </div>
 {/* Graphique d'évolution du patrimoine */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <NetWorthChart inputs={financialInputs} />
 
- <details className="glass rounded-2xl p-6 mt-4">
+ <details className="glass rounded-2xl p-5 sm:p-6 mt-4">
             <summary className="cursor-pointer text-sm font-semibold text-[var(--color-primary)]">
               Comment ce graphique est-il calculé ?
             </summary>
@@ -302,7 +302,7 @@ const healthScore = calculateHealthScore({
         </div>
         {/* Objectif financier */}
         {finances.objectif_financier && (
-          <div className="glass rounded-2xl p-6">
+          <div className="glass rounded-2xl p-5 sm:p-6">
             <p className="text-sm text-[var(--color-text-secondary)] mb-2">
               Objectif : {finances.objectif_financier}
             </p>

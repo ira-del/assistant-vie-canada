@@ -10,8 +10,8 @@ export default function HealthScoreCard({ result }: { result: HealthScoreResult 
   const config = NIVEAU_CONFIG[result.niveau];
 
   return (
-    <div className="glass rounded-2xl p-6 md:p-8 mb-8">
-      <div className="flex flex-col md:flex-row md:items-start gap-8">
+    <div className="glass rounded-2xl p-5 sm:p-6 md:p-8 mb-6 md:mb-8">
+      <div className="flex flex-col md:flex-row md:items-start gap-6 md:gap-8">
         {/* Score circulaire */}
         <div className="flex-shrink-0 flex flex-col items-center mx-auto md:mx-0">
           <div
@@ -34,7 +34,7 @@ export default function HealthScoreCard({ result }: { result: HealthScoreResult 
         </div>
 
         {/* Détails */}
-        <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm w-full">
+        <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 text-sm w-full">
           <div>
             <p className="font-semibold text-[var(--color-success)] mb-3 flex items-center gap-1.5">
               ✅ Points forts

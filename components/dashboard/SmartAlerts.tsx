@@ -33,7 +33,7 @@ export default function SmartAlerts({
   }
 
   return (
-    <div className="space-y-3 mb-8">
+    <div className="space-y-3 mb-6 md:mb-8">
       {visible.map((alert) => (
         <div
           key={alert.id}
