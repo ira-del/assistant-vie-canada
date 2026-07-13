@@ -77,3 +77,45 @@ button.menu-item-button:active {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* Style du contenu Markdown des articles de blog (rendu via
+   dangerouslySetInnerHTML) — pas de plugin typography, juste les balises
+   qu'un article peut réellement produire (h2, p, ul, a, strong, hr). */
+.prose-blog {
+  color: var(--color-text-secondary);
+  line-height: 1.75;
+  font-size: 0.9375rem;
+}
+.prose-blog h2 {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+.prose-blog h2:first-child {
+  margin-top: 0;
+}
+.prose-blog p {
+  margin-bottom: 1rem;
+}
+.prose-blog ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+.prose-blog li {
+  margin-bottom: 0.375rem;
+}
+.prose-blog a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}
+.prose-blog strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+.prose-blog hr {
+  border-color: rgba(255, 255, 255, 0.1);
+  margin: 1.5rem 0;
+}
