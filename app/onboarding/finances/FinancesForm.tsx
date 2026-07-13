@@ -16,14 +16,14 @@ function LabelWithTooltip({
   const [show, setShow] = useState(false);
 
   return (
-    <label htmlFor={htmlFor} className="flex items-center gap-1.5 text-sm mb-1 flex-wrap">
-      {label}
+    <label htmlFor={htmlFor} className="block text-sm mb-1">
+      {label}{" "}
       <span
-        className="relative inline-flex"
+        className="relative inline-flex align-middle"
         onMouseEnter={() => setShow(true)}
         onMouseLeave={() => setShow(false)}
       >
-        <span className="w-4 h-4 flex-shrink-0 rounded-full bg-white/10 text-[10px] flex items-center justify-center cursor-pointer text-[var(--color-text-secondary)]">
+        <span className="w-4 h-4 flex-shrink-0 rounded-full bg-white/10 text-[10px] inline-flex items-center justify-center cursor-pointer text-[var(--color-text-secondary)]">
           ?
         </span>
         {show && (
@@ -118,7 +118,7 @@ export default function OnboardingFinancesClient({
 
         <form action={saveFinancialProfile} className="flex flex-col gap-4">
           <FormSection icon="💰" title="Revenus">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <LabelWithTooltip
                   htmlFor="salaire_mensuel"
@@ -191,7 +191,7 @@ export default function OnboardingFinancesClient({
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <LabelWithTooltip
                   htmlFor="montant_epargne_mensuel"
@@ -266,7 +266,7 @@ export default function OnboardingFinancesClient({
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <LabelWithTooltip
                       htmlFor="montant_paiement_dettes"
@@ -306,7 +306,7 @@ export default function OnboardingFinancesClient({
           </FormSection>
 
           <FormSection icon="📈" title="Investissements">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <LabelWithTooltip
                   htmlFor="montant_investi_mensuel"
