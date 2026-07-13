@@ -1,8 +1,10 @@
 import Link from "next/link";
+import JsonLd from "@/components/seo/JsonLd";
 
 export const metadata = {
   title: "FAQ",
   description: "Réponses aux questions fréquentes sur Assistant Vie Canada.",
+  alternates: { canonical: "/faq" },
 };
 
 const QUESTIONS = [
@@ -33,8 +35,22 @@ const QUESTIONS = [
 ];
 
 export default function FaqPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: QUESTIONS.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.r,
+      },
+    })),
+  };
+
   return (
     <main className="min-h-screen gradient-bg p-6 md:p-10">
+      <JsonLd data={jsonLd} />
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">Questions fréquentes</h1>

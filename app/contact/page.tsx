@@ -3,6 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Contact",
   description: "Contacte l'équipe d'Assistant Vie Canada.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

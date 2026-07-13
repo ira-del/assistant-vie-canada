@@ -3,6 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Conditions d'utilisation",
   description: "Les règles d'utilisation d'Assistant Vie Canada.",
+  alternates: { canonical: "/conditions-utilisation" },
 };
 
 export default function ConditionsUtilisationPage() {

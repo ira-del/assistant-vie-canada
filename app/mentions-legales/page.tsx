@@ -3,6 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Mentions légales",
   description: "Informations légales concernant Assistant Vie Canada.",
+  alternates: { canonical: "/mentions-legales" },
 };
 
 export default function MentionsLegalesPage() {

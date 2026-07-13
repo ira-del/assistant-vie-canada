@@ -20,8 +20,10 @@ const geistMono = Geist_Mono({
 
 const TITRE = "Assistant Vie Canada";
 const DESCRIPTION = "Simule ton avenir financier, obtiens des conseils personnalisés par IA, et découvre les aides auxquelles tu as droit au Canada.";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://assistant-vie-canada.vercel.app";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: TITRE,
     template: `%s — ${TITRE}`,

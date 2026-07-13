@@ -3,6 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Politique de confidentialité",
   description: "Comment Assistant Vie Canada collecte, utilise et protège tes données personnelles.",
+  alternates: { canonical: "/confidentialite" },
 };
 
 export default function ConfidentialitePage() {

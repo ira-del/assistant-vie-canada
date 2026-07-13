@@ -3,6 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "À propos",
   description: "La mission et les fonctionnalités d'Assistant Vie Canada.",
+  alternates: { canonical: "/a-propos" },
 };
 
 export default function AProposPage() {
