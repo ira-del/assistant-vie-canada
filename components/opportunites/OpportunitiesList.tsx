@@ -4,6 +4,67 @@ import { useState, useTransition } from "react";
 import { generateOpportunities, type Opportunity } from "@/app/actions/opportunities";
 import { trouverLienOrganisme } from "@/lib/data/organismLinks";
 
+// Carte repliée par défaut (titre + résumé court) pour éviter d'obliger à
+// tout faire défiler ; la description complète et la démarche ne
+// s'affichent qu'au clic sur "Voir plus".
+function OpportunityCard({
+  opp,
+  lien,
+}: {
+  opp: Opportunity;
+  lien: ReturnType<typeof trouverLienOrganisme>;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="glass rounded-2xl p-5 sm:p-6">
+      <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] mb-3">
+        {opp.categorie}
+      </span>
+      <p className="text-sm font-semibold mb-2">{opp.titre}</p>
+      <p
+        className={`text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3 ${
+          expanded ? "" : "line-clamp-2"
+        }`}
+      >
+        {opp.description}
+      </p>
+
+      {expanded && (
+        <>
+          <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mb-3">
+            <span className="font-medium text-[var(--color-text-primary)]">Démarche : </span>
+            {opp.demarche}
+          </p>
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-[var(--color-text-secondary)] opacity-70">
+              {opp.organisme}
+            </p>
+            {lien && (
+              <a
+                href={lien.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-button text-xs font-medium text-[var(--color-primary)] hover:underline whitespace-nowrap ml-2"
+              >
+                Visiter le site →
+              </a>
+            )}
+          </div>
+        </>
+      )}
+
+      <button
+        type="button"
+        onClick={() => setExpanded((e) => !e)}
+        className="text-xs font-medium text-[var(--color-primary)] hover:underline mt-3"
+      >
+        {expanded ? "Voir moins" : "Voir plus"}
+      </button>
+    </div>
+  );
+}
+
 export default function OpportunitiesList() {
   const [opportunites, setOpportunites] = useState<Opportunity[] | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +90,8 @@ export default function OpportunitiesList() {
 
   return (
     <div className="space-y-6">
-      <div className="glass rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-2">
+      <div className="glass rounded-2xl p-5 sm:p-6">
+        <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
           <p className="text-sm font-semibold text-[var(--color-primary)]">
             Découvre ce à quoi tu pourrais avoir droit
           </p>
@@ -89,39 +150,9 @@ export default function OpportunitiesList() {
       {opportunites && !isPending && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {opportunites.map((opp, i) => {
-              const lien = trouverLienOrganisme(opp.organisme);
-              return (
-                <div key={i} className="glass rounded-2xl p-6">
-                  <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] mb-3">
-                    {opp.categorie}
-                  </span>
-                  <p className="text-sm font-semibold mb-2">{opp.titre}</p>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                    {opp.description}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-                    <span className="font-medium text-[var(--color-text-primary)]">Démarche : </span>
-                    {opp.demarche}
-                  </p>
-                  <div className="flex items-center justify-between mt-3">
-                    <p className="text-xs text-[var(--color-text-secondary)] opacity-70">
-                      {opp.organisme}
-                    </p>
-                    {lien && (
-                      <a
-                        href={lien.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="link-button text-xs font-medium text-[var(--color-primary)] hover:underline whitespace-nowrap ml-2"
-                      >
-                        Visiter le site →
-                      </a>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            {opportunites.map((opp, i) => (
+              <OpportunityCard key={i} opp={opp} lien={trouverLienOrganisme(opp.organisme)} />
+            ))}
           </div>
 
           <p className="text-xs text-[var(--color-text-secondary)] opacity-70 px-2">

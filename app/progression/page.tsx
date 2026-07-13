@@ -96,11 +96,11 @@ export default async function ProgressionPage() {
   const profileInsights = getProfileInsights(profile.situation_professionnelle);
 
   return (
-    <main className="min-h-screen gradient-bg p-6 md:p-10">
+    <main className="min-h-screen gradient-bg p-4 sm:p-6 md:p-10">
       <div className="max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-6 md:mb-8 gap-3 flex-wrap">
           <div>
-            <h1 className="text-3xl font-bold">Ma progression</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold">Ma progression</h1>
             <p className="text-[var(--color-text-secondary)] text-sm">
               Ton conseiller, tes prochaines étapes et tes badges
             </p>
