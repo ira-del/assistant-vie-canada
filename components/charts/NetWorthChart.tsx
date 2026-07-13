@@ -17,7 +17,7 @@ import {
   FinancialInputs,
 } from "@/lib/finance/projectNetWorth";
 
-const DUREES = [10, 20, 40, 60, 80, 100];
+const DUREES = [1, 5, 10];
 
 const UNITES = [
   { valeur: "jours", label: "jour(s)" },
@@ -59,12 +59,13 @@ function convertirEnMois(valeur: number, unite: Unite): number {
 }
 
 export default function NetWorthChart({ inputs }: { inputs: FinancialInputs }) {
-  const [duree, setDuree] = useState(40);
+  const [duree, setDuree] = useState(5);
   const [mensuel, setMensuel] = useState(false);
   const [courbesActives, setCourbesActives] = useState<Set<string>>(
     new Set(["patrimoineNet"])
   );
 
+  const [expanded, setExpanded] = useState(false);
   const [personnaliseOuvert, setPersonnaliseOuvert] = useState(false);
   const [customValeur, setCustomValeur] = useState(6);
   const [customUnite, setCustomUnite] = useState<Unite>("mois");
@@ -148,7 +149,7 @@ export default function NetWorthChart({ inputs }: { inputs: FinancialInputs }) {
   }
 
   return (
-    <div className="glass rounded-2xl p-6">
+    <div className="glass rounded-2xl p-5 sm:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-1">
         <div>
           <p className="text-sm text-[var(--color-text-secondary)]">
@@ -159,33 +160,48 @@ export default function NetWorthChart({ inputs }: { inputs: FinancialInputs }) {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-1.5 items-center">
-          {DUREES.map((d) => (
-            <button
-              key={d}
-              onClick={() => choisirPreset(d)}
-              className={`text-xs px-2.5 py-1 rounded-full transition ${
-                !mensuel && duree === d
-                  ? "bg-[var(--color-primary)] text-white"
-                  : "bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10"
-              }`}
-            >
-              {d} ans
-            </button>
-          ))}
-          <button
-            onClick={() => setPersonnaliseOuvert((o) => !o)}
-            className={`text-xs px-2.5 py-1 rounded-full transition border ${
-              personnaliseOuvert
-                ? "border-[var(--color-primary)] bg-[var(--color-primary)]/20"
-                : "border-white/10 bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10"
+        <div className="flex items-center gap-3">
+          <div
+            className={`flex-wrap gap-1.5 items-center ${
+              expanded ? "flex" : "hidden md:flex"
             }`}
           >
-            Personnalisé
+            {DUREES.map((d) => (
+              <button
+                key={d}
+                onClick={() => choisirPreset(d)}
+                className={`text-xs px-2.5 py-1 rounded-full transition ${
+                  !mensuel && duree === d
+                    ? "bg-[var(--color-primary)] text-white"
+                    : "bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10"
+                }`}
+              >
+                {d} an{d > 1 ? "s" : ""}
+              </button>
+            ))}
+            <button
+              onClick={() => setPersonnaliseOuvert((o) => !o)}
+              className={`text-xs px-2.5 py-1 rounded-full transition border ${
+                personnaliseOuvert
+                  ? "border-[var(--color-primary)] bg-[var(--color-primary)]/20"
+                  : "border-white/10 bg-white/5 text-[var(--color-text-secondary)] hover:bg-white/10"
+              }`}
+            >
+              Personnalisé
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setExpanded((e) => !e)}
+            className="md:hidden flex-shrink-0 text-xs font-medium text-[var(--color-primary)] hover:underline"
+          >
+            {expanded ? "Masquer le graphique" : "Voir le graphique"}
           </button>
         </div>
       </div>
 
+      <div className={expanded ? "block" : "hidden md:block"}>
       {personnaliseOuvert && (
         <div className="flex flex-wrap items-end gap-2 mt-3 p-3 rounded-lg bg-white/5">
           <div>
@@ -366,6 +382,7 @@ export default function NetWorthChart({ inputs }: { inputs: FinancialInputs }) {
             </div>
           );
         })()}
+      </div>
     </div>
   );
 }
