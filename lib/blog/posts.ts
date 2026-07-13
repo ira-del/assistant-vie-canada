@@ -37,6 +37,14 @@ function listerFichiers(): string[] {
   return fs.readdirSync(DOSSIER_ARTICLES).filter((f) => f.endsWith(".md"));
 }
 
+// Permet d'écrire des articles à l'avance avec une date future — ils restent
+// invisibles (liste, sitemap, page individuelle) jusqu'à ce que leur date
+// arrive, sans qu'aucune action manuelle ne soit nécessaire pour les publier.
+function estPublie(date: string): boolean {
+  const aujourdhui = new Date().toISOString().slice(0, 10);
+  return date <= aujourdhui;
+}
+
 export function getAllPosts(): ArticleMeta[] {
   return listerFichiers()
     .map((fichier) => {
@@ -50,6 +58,7 @@ export function getAllPosts(): ArticleMeta[] {
         category: data.category as string,
       };
     })
+    .filter((post) => estPublie(post.date))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
@@ -71,6 +80,11 @@ export function getPostBySlug(slug: string): Article | null {
 
   const contenuBrut = fs.readFileSync(cheminFichier, "utf-8");
   const { data, content } = matter(contenuBrut);
+
+  // Accès direct à l'URL d'un article dont la date n'est pas encore arrivée
+  // — on le traite comme inexistant, exactement comme s'il n'était pas
+  // encore publié.
+  if (!estPublie(data.date as string)) return null;
 
   return {
     slug,
