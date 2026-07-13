@@ -13,6 +13,10 @@ export default function GoogleAnalyticsLoader() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // localStorage n'existe pas côté serveur — on ne peut lire le
+    // consentement qu'après le montage, pour éviter un mismatch
+    // d'hydratation entre le rendu serveur et le premier rendu client.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAutorise(lireConsentement() === "accepted");
     function onChange() {
       setAutorise(lireConsentement() === "accepted");

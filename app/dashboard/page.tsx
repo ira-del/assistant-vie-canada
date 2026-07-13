@@ -53,9 +53,21 @@ export default async function DashboardPage() {
   const investiMensuel = Number(finances.montant_investi_mensuel);
 
   const patrimoineNet = epargne - dettes;
-  const epargneReelleMensuelle =
-    Number(finances.montant_epargne_mensuel) || 0;
-  const paiementDettesMensuel = Number(finances.montant_paiement_dettes) || 0;
+  // montant_epargne_mensuel / montant_paiement_dettes sont exprimés à la
+  // fréquence choisie par l'utilisateur (hebdomadaire, aux 2 semaines...),
+  // pas forcément mensuelle malgré leur nom — montantMensuel() les convertit
+  // en équivalent mensuel réel. Ce point avait été fait correctement pour
+  // GoalScenarios plus bas, mais oublié ici : le score de santé, les alertes,
+  // le solde et le taux d'épargne affichés étaient sous-évalués pour tout
+  // utilisateur ayant choisi une fréquence non mensuelle.
+  const epargneReelleMensuelle = montantMensuel(
+    Number(finances.montant_epargne_mensuel) || 0,
+    finances.frequence_epargne || "mensuel"
+  );
+  const paiementDettesMensuel = montantMensuel(
+    Number(finances.montant_paiement_dettes) || 0,
+    finances.frequence_paiement_dettes || "mensuel"
+  );
   // Doit inclure TOUTES les sorties d'argent (dépenses, investissements,
   // épargne régulière ET paiement des dettes) pour représenter le vrai
   // reste disponible — cohérent avec le même calcul dans
@@ -108,9 +120,9 @@ const healthScore = calculateHealthScore({
     depensesMensuelles: depenses,
     epargneActuelle: epargne,
     dettes,
-    montantEpargneMensuel: Number(finances.montant_epargne_mensuel) || 0,
+    montantEpargneMensuel: epargneReelleMensuelle,
     montantInvestiMensuel: investiMensuel,
-    montantPaiementDettes: Number(finances.montant_paiement_dettes) || 0,
+    montantPaiementDettes: paiementDettesMensuel,
     patrimoineNet,
     montantObjectif,
     progressionObjectif,
@@ -122,9 +134,9 @@ const healthScore = calculateHealthScore({
     epargneActuelle: epargne,
     dettes,
     tauxInteretDettes: Number(finances.taux_interet_dettes) || 0,
-    montantEpargneMensuel: Number(finances.montant_epargne_mensuel) || 0,
+    montantEpargneMensuel: epargneReelleMensuelle,
     montantInvestiMensuel: investiMensuel,
-    montantPaiementDettes: Number(finances.montant_paiement_dettes) || 0,
+    montantPaiementDettes: paiementDettesMensuel,
     patrimoineNet,
     montantObjectif,
     progressionObjectif,
@@ -325,10 +337,7 @@ const healthScore = calculateHealthScore({
             <GoalScenarios
               epargneActuelle={epargne}
               montantObjectif={montantObjectif}
-              epargneMensuelleActuelle={montantMensuel(
-                Number(finances.montant_epargne_mensuel) || 0,
-                finances.frequence_epargne || "mensuel"
-              )}
+              epargneMensuelleActuelle={epargneReelleMensuelle}
             />
           </div>
         )}

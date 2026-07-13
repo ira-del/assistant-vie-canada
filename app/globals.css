@@ -138,3 +138,37 @@ button.menu-item-button:active {
   border-color: rgba(255, 255, 255, 0.1);
   margin: 1.5rem 0;
 }
+
+/* Réponses de l'Assistant IA (rendues en Markdown) — plus compact que
+   .prose-blog puisque affiché dans une petite bulle de conversation, pas
+   une page d'article. */
+.prose-chat {
+  line-height: 1.6;
+}
+.prose-chat p {
+  margin-bottom: 0.5rem;
+}
+.prose-chat p:last-child {
+  margin-bottom: 0;
+}
+.prose-chat ul,
+.prose-chat ol {
+  padding-left: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.prose-chat ul {
+  list-style: disc;
+}
+.prose-chat ol {
+  list-style: decimal;
+}
+.prose-chat li {
+  margin-bottom: 0.25rem;
+}
+.prose-chat strong {
+  font-weight: 700;
+}
+.prose-chat a {
+  color: var(--color-secondary);
+  text-decoration: underline;
+}

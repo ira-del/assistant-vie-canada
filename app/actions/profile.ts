@@ -4,10 +4,13 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { enregistrerActivite } from "@/lib/auth/activityLog";
 
-// Petite fonction utilitaire : convertit en nombre, jamais NaN
+// Petite fonction utilitaire : convertit en nombre, jamais NaN ni négatif.
+// Tous les champs qui passent par ici (âge, montants, taux) n'ont de sens
+// qu'à partir de 0 — le formulaire l'impose déjà côté client (min="0"), mais
+// rien ne validait ça côté serveur si ce champ était contourné.
 function toNumber(value: FormDataEntryValue | null): number {
   const n = Number(value);
-  return isNaN(n) ? 0 : n;
+  return isNaN(n) ? 0 : Math.max(0, n);
 }
 
 // Sauvegarde l'étape 1 : profil général

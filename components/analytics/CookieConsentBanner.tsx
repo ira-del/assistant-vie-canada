@@ -9,6 +9,10 @@ export default function CookieConsentBanner() {
   const [analyticsActif, setAnalyticsActif] = useState(true);
 
   useEffect(() => {
+    // localStorage n'existe pas côté serveur — on ne peut lire le
+    // consentement qu'après le montage, pour éviter un mismatch
+    // d'hydratation entre le rendu serveur et le premier rendu client.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setVisible(lireConsentement() === null);
   }, []);
 

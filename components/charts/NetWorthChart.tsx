@@ -82,7 +82,6 @@ export default function NetWorthChart({ inputs }: { inputs: FinancialInputs }) {
     Analytics.simulationLancee({ duree, mensuel });
     // Ne suivre que les vrais changements de paramètres de simulation,
     // pas chaque re-render (ex: sélection d'un point sur le graphique).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [duree, mensuel]);
 
   const data: Point[] = useMemo(() => {

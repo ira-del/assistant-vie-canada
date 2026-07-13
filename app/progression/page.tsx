@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { montantMensuel } from "@/lib/finance/projectNetWorth";
 import { generateNextSteps } from "@/lib/finance/generateNextSteps";
 import NextStepsChecklist from "@/components/dashboard/NextStepsChecklist";
 import { BADGE_CATALOG, computeSatisfiedBadgeIds } from "@/lib/finance/badgeCatalog";
@@ -64,14 +65,23 @@ export default async function ProgressionPage() {
       ? Math.min(100, Math.round((epargne / montantObjectif) * 100))
       : 0;
 
+  // montant_epargne_mensuel / montant_paiement_dettes sont exprimés à la
+  // fréquence choisie (hebdomadaire, aux 2 semaines...), pas forcément
+  // mensuelle — voir la même correction dans app/dashboard/page.tsx.
   const scoreInputs = {
     revenuMensuelTotal,
     depensesMensuelles: depenses,
     epargneActuelle: epargne,
     dettes,
-    montantEpargneMensuel: Number(finances.montant_epargne_mensuel) || 0,
+    montantEpargneMensuel: montantMensuel(
+      Number(finances.montant_epargne_mensuel) || 0,
+      finances.frequence_epargne || "mensuel"
+    ),
     montantInvestiMensuel: investiMensuel,
-    montantPaiementDettes: Number(finances.montant_paiement_dettes) || 0,
+    montantPaiementDettes: montantMensuel(
+      Number(finances.montant_paiement_dettes) || 0,
+      finances.frequence_paiement_dettes || "mensuel"
+    ),
     patrimoineNet,
     montantObjectif,
     progressionObjectif,

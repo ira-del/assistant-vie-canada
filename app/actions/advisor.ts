@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { anthropic, CLAUDE_MODEL } from "@/lib/ai/client";
+import { montantMensuel } from "@/lib/finance/projectNetWorth";
 import { calculateHealthScore } from "@/lib/finance/calculateHealthScore";
 import { buildProfessionalContext } from "@/lib/finance/profileContext";
 import { verifierEtEnregistrerAppelIA } from "@/lib/ai/rateLimit";
@@ -53,14 +54,23 @@ export async function generateAdvisorSummary(): Promise<
       ? Math.min(100, Math.round((epargne / montantObjectif) * 100))
       : 0;
 
+  // montant_epargne_mensuel / montant_paiement_dettes sont exprimés à la
+  // fréquence choisie (hebdomadaire, aux 2 semaines...), pas forcément
+  // mensuelle — voir la même correction dans app/dashboard/page.tsx.
   const healthScore = calculateHealthScore({
     revenuMensuelTotal,
     depensesMensuelles: depenses,
     epargneActuelle: epargne,
     dettes,
-    montantEpargneMensuel: Number(finances.montant_epargne_mensuel) || 0,
+    montantEpargneMensuel: montantMensuel(
+      Number(finances.montant_epargne_mensuel) || 0,
+      finances.frequence_epargne || "mensuel"
+    ),
     montantInvestiMensuel: investiMensuel,
-    montantPaiementDettes: Number(finances.montant_paiement_dettes) || 0,
+    montantPaiementDettes: montantMensuel(
+      Number(finances.montant_paiement_dettes) || 0,
+      finances.frequence_paiement_dettes || "mensuel"
+    ),
     patrimoineNet,
     montantObjectif,
     progressionObjectif,
