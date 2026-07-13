@@ -52,8 +52,27 @@ export default function AdvisorSummary({
             type="button"
             onClick={handleGenerate}
             disabled={isPending}
-            className="rounded-lg bg-[var(--color-primary)] hover:opacity-90 transition py-1.5 px-3 text-xs font-semibold disabled:opacity-50"
+            className="rounded-lg bg-[var(--color-primary)] hover:opacity-90 transition py-1.5 px-3 text-xs font-semibold disabled:opacity-50 flex items-center gap-2"
           >
+            <svg
+              className={`animate-spin h-4 w-4 ${isPending ? "" : "hidden"}`}
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-90"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
             {isPending
               ? "Analyse en cours..."
               : revealed
