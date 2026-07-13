@@ -21,8 +21,14 @@ export default function ContactPage() {
 
         <div className="glass rounded-2xl p-6 md:p-8 space-y-6">
           <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-            Notre canal de contact dédié est en cours de mise en place. En attendant, la majorité
-            des questions courantes trouvent leur réponse dans notre{" "}
+            Une question, un problème, une suggestion ? Écris-nous à{" "}
+            <a
+              href="mailto:contact@assistantvie.com"
+              className="text-[var(--color-secondary)] hover:underline font-semibold"
+            >
+              contact@assistantvie.com
+            </a>
+            . La majorité des questions courantes trouvent aussi leur réponse dans notre{" "}
             <Link href="/faq" className="text-[var(--color-secondary)] hover:underline">
               FAQ
             </Link>
@@ -33,9 +39,7 @@ export default function ContactPage() {
             <p className="text-sm font-semibold text-[var(--color-primary)] mb-1">
               Délai de réponse habituel
             </p>
-            <p className="text-sm text-[var(--color-text-secondary)]">
-              48 heures ouvrables, une fois notre adresse de contact activée.
-            </p>
+            <p className="text-sm text-[var(--color-text-secondary)]">48 heures ouvrables.</p>
           </div>
 
           <div className="border-t border-white/10 pt-6">

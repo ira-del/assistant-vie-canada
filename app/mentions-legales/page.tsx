@@ -57,7 +57,14 @@ export default function MentionsLegalesPage() {
               Contact
             </h2>
             <p>
-              Pour toute question, consulte notre page{" "}
+              Pour toute question, écris à{" "}
+              <a
+                href="mailto:contact@assistantvie.com"
+                className="text-[var(--color-secondary)] hover:underline"
+              >
+                contact@assistantvie.com
+              </a>{" "}
+              ou consulte notre page{" "}
               <Link href="/contact" className="text-[var(--color-secondary)] hover:underline">
                 Contact
               </Link>
