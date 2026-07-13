@@ -7,6 +7,39 @@ import {
 } from "@/app/actions/immigration";
 import { trouverLienOrganisme } from "@/lib/data/organismLinks";
 
+// Repliée par défaut (titre + résumé court) pour éviter d'obliger à tout
+// faire défiler ; la description complète ne s'affiche qu'au clic.
+function EtapeCard({ etape, index }: { etape: ImmigrationDiagnosis["etapes"][number]; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div className="glass rounded-2xl p-5 sm:p-6">
+      <div className="flex items-start gap-3">
+        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-semibold flex items-center justify-center">
+          {index + 1}
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-semibold mb-1">{etape.titre}</p>
+          <p
+            className={`text-xs text-[var(--color-text-secondary)] leading-relaxed ${
+              expanded ? "" : "line-clamp-2"
+            }`}
+          >
+            {etape.description}
+          </p>
+          <button
+            type="button"
+            onClick={() => setExpanded((e) => !e)}
+            className="text-xs font-medium text-[var(--color-primary)] hover:underline mt-2"
+          >
+            {expanded ? "Voir moins" : "Voir plus"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ImmigrationDiagnosisView() {
   const [diagnosis, setDiagnosis] = useState<ImmigrationDiagnosis | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +65,7 @@ export default function ImmigrationDiagnosisView() {
 
   return (
     <div className="space-y-6">
-      <div className="glass rounded-2xl p-6">
+      <div className="glass rounded-2xl p-5 sm:p-6">
         <div className="flex items-center justify-between mb-2">
           <p className="text-sm font-semibold text-[var(--color-primary)]">
             Comprendre ta situation et tes prochaines étapes
@@ -96,7 +129,7 @@ export default function ImmigrationDiagnosisView() {
 
       {diagnosis && !isPending && (
         <>
-          <div className="glass rounded-2xl p-6">
+          <div className="glass rounded-2xl p-5 sm:p-6">
             <p className="text-sm font-semibold mb-2">Ton diagnostic</p>
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
               {diagnosis.diagnostic}
@@ -107,25 +140,13 @@ export default function ImmigrationDiagnosisView() {
             <p className="text-sm font-semibold mb-3">Prochaines étapes</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {diagnosis.etapes.map((etape, i) => (
-                <div key={i} className="glass rounded-2xl p-6">
-                  <div className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] text-xs font-semibold flex items-center justify-center">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold mb-1">{etape.titre}</p>
-                      <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-                        {etape.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <EtapeCard key={i} etape={etape} index={i} />
               ))}
             </div>
           </div>
 
           {diagnosis.organismes.length > 0 && (
-            <div className="glass rounded-2xl p-6">
+            <div className="glass rounded-2xl p-5 sm:p-6">
               <p className="text-sm font-semibold mb-3">Ressources et organismes</p>
               <ul className="space-y-2">
                 {diagnosis.organismes.map((organisme, i) => {

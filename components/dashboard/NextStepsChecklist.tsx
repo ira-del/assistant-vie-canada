@@ -16,7 +16,7 @@ export default function NextStepsChecklist({
 
   if (steps.length === 0) {
     return (
-      <div className="glass rounded-2xl p-6 mb-8">
+      <div className="glass rounded-2xl p-5 sm:p-6 mb-6 md:mb-8">
         <p className="text-sm font-semibold text-[var(--color-primary)] mb-1">
           Prochaines étapes
         </p>
@@ -55,7 +55,7 @@ export default function NextStepsChecklist({
   const doneCount = steps.filter((s) => completed.has(s.id)).length;
 
   return (
-    <div className="glass rounded-2xl p-6 mb-8">
+    <div className="glass rounded-2xl p-5 sm:p-6 mb-6 md:mb-8">
       <div className="flex items-center justify-between mb-4">
         <p className="text-sm font-semibold text-[var(--color-primary)]">
           Prochaines étapes

@@ -50,7 +50,7 @@ export default function HistoryChart({ snapshots }: { snapshots: HealthSnapshot[
 
   if (snapshots.length < 2) {
     return (
-      <div className="glass rounded-2xl p-6 mb-8">
+      <div className="glass rounded-2xl p-5 sm:p-6 mb-6 md:mb-8">
         <p className="text-sm font-semibold text-[var(--color-primary)] mb-1">
           Ton évolution réelle
         </p>
@@ -73,7 +73,7 @@ export default function HistoryChart({ snapshots }: { snapshots: HealthSnapshot[
   }));
 
   return (
-    <div className="glass rounded-2xl p-6 mb-8">
+    <div className="glass rounded-2xl p-5 sm:p-6 mb-6 md:mb-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <p className="text-sm font-semibold text-[var(--color-primary)]">
